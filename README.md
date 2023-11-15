@@ -55,9 +55,4 @@ Let's understand the various components of the above command:
 
 - [Postman Collection](https://github.com/kedarchandrayan/vllm-poc/files/13360630/vllm.openai.postman_collection.json)
 - In the Postman environment, set api_host variable with the machine IP:PORT.
-- Machine: g5.2xlarge
-- GPU utilization 0.5
 
-#### Observations
-- Load average:
-- Average Inference Time:
