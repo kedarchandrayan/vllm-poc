@@ -5,9 +5,9 @@ Link to the docs: https://vllm.readthedocs.io/en/latest/index.html
 GitHub Repo: https://github.com/vllm-project/vllm
 
 ## Machine
-We used 2xlarge instance size from the g5 instance type of machines. For more details on configuration, visit [here](https://aws.amazon.com/ec2/instance-types/g5/).
+2xlarge instance size from the g5 instance type of machines was able to both build and run the server. For more details on configuration, visit [here](https://aws.amazon.com/ec2/instance-types/g5/).
 
-Note: With g5.xlarge, the build did not succeed due to CPU over utilization.
+With g5.xlarge, the build did not succeed due to CPU over utilization. We even tried with building the image using g5.2xlarge and then running the server on g5.xlarge, but we faced CUDA out of memory issues.
 
 ## Build inside docker
 
@@ -29,7 +29,7 @@ Let's understand the various components of the above command:
 - `docker build .`: This command initiates the build process. The . at the end denotes the build context, the directory containing the Dockerfile and other necessary files.
 - `--target vllm`: Specifies the target stage in the multi-stage Dockerfile. In this case, it indicates that only the stage named vllm and its dependencies should be built.
 - `--tag vllm`: Assigns the name "vllm" to the final image that will be built.
-- `--build-arg max_jobs=8`: Passes a build argument named max_jobs with a value of 8 to the Dockerfile. This argument is used in the Dockerfile with the line ENV MAX_JOBS=$max_jobs to set the environment variable MAX_JOBS, which is used to control parallelism in theninja build system.
+- `--build-arg max_jobs=8`: Passes a build argument named max_jobs with a value of 8 to the Dockerfile. This argument is used in the Dockerfile with the line ENV MAX_JOBS=$max_jobs to set the environment variable MAX_JOBS, which is used to control parallelism in the ninja build system.
 
 ### Run Server
 Following is the command for running the server:
