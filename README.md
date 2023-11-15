@@ -1,4 +1,4 @@
-[vllm openai.postman_collection.json](https://github.com/kedarchandrayan/vllm-poc/files/13360630/vllm.openai.postman_collection.json)# vLLM POC
+# vLLM POC
 
 Link to the docs: https://vllm.readthedocs.io/en/latest/index.html
 
@@ -30,5 +30,5 @@ Note: With g5.xlarge, the build did not succeed due to CPU over utilization.
 ```
 ## Postman
 
-
-
+- [Postman Collection](https://github.com/kedarchandrayan/vllm-poc/files/13360630/vllm.openai.postman_collection.json)
+- In the Postman environment, set api_host variable with the machine IP:PORT.
