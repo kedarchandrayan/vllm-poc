@@ -21,8 +21,6 @@ Note: With g5.xlarge, the build did not succeed due to CPU over utilization.
 ### Build from source
 Following is the command for building from source:
 ```sh
-    # Build vllm-openai stage from the dockerfile
-    # Create image with name vllm
     DOCKER_BUILDKIT=1 docker build . --target vllm --tag vllm --build-arg max_jobs=8
 ```
 
