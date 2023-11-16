@@ -13,6 +13,8 @@ runpod instance with the following configuration was used:
 - 62 GB RAM
 - 200 GB disk
 
+Expose TCP port 8000. For calling the APIs, we will use the public IP and the external port mapped to internal 8000 port.
+
 ### Setup Commands
 Create directory structure using following commands:
 
