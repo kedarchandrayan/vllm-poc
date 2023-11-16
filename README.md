@@ -4,12 +4,83 @@ Link to the docs: https://vllm.readthedocs.io/en/latest/index.html
 
 GitHub Repo: https://github.com/vllm-project/vllm
 
-## Machine
+## Install using pip
+
+### Machine
+runpod instance with the following configuration was used:
+- 24 GB GPU memory
+- 10 vCPUs
+- 62 GB RAM
+- 200 GB disk
+
+### Setup Commands
+Create directory structure using following commands:
+
+```sh
+mkdir /workspace/vllm
+mkdir /workspace/vllm/logs
+touch /workspace/vllm/logs/err.log
+touch /workspace/vllm/logs/out.log
+```
+
+Install venv using following commands:
+
+```sh
+apt-get update
+apt-get -y install python3-venv
+```
+
+Install vllm using following commands:
+
+```sh
+cd /workspace/vllm
+
+python3 -m venv venv
+. venv/bin/activate
+
+pip3 install vllm
+```
+
+Install supervisor and vim using following command:
+
+```sh
+apt-get -y install vim supervisor
+```
+
+Configure supervisor by creating `/etc/supervisor/conf.d/vllm.conf` file with following content. Please replace the hugging face token with proper value.
+
+```
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=http://127.0.0.1:8000
+
+[supervisord]
+
+[program:vllm_server]
+environment = HUGGING_FACE_HUB_TOKEN={{secret}}
+user=root
+directory=/workspace/vllm
+command=/workspace/vllm/venv/bin/python3 -m vllm.entrypoints.openai.api_server --download-dir /workspace/vllm/huggingface --gpu-memory-utilization 0.8 --model mohitcharkha/Llama2_7b_chat_hf_noaction_finetune
+autostart=true
+autorestart=true
+stderr_logfile=/workspace/vllm/logs/err.log
+stdout_logfile=/workspace/vllm/logs/out.log
+```
+
+Start the supervisor daemon passing the correct config file using the following command:
+
+```sh
+supervisord -c /etc/supervisor/conf.d/vllm.conf
+```
+
+## Build Inside Docker
+
+### Machine
 2xlarge instance size from the g5 instance type of machines was able to both build and run the server. For more details on configuration, visit [here](https://aws.amazon.com/ec2/instance-types/g5/).
 
 With g5.xlarge, the build did not succeed due to CPU over utilization. We even tried with building the image using g5.2xlarge and then running the server on g5.xlarge, but we faced CUDA out of memory issues.
-
-## Build inside docker
 
 ### Clone the Repository
 
@@ -18,7 +89,7 @@ With g5.xlarge, the build did not succeed due to CPU over utilization. We even t
     cd vllm
 ```
 
-### Build from source
+### Build from Source
 Following is the command for building from source:
 ```sh
     DOCKER_BUILDKIT=1 docker build . --target vllm --tag vllm --build-arg max_jobs=8
@@ -52,7 +123,7 @@ Let's understand the various components of the above command:
 - `--model mohitcharkha/Llama2_7b_chat_hf_noaction_finetune`: Specifies the Hugging Face model to use.
 
 ## Postman
-
+To test out the APIs, use the following Postman collection:
 - [Postman Collection](https://github.com/kedarchandrayan/vllm-poc/files/13360630/vllm.openai.postman_collection.json)
 - In the Postman environment, set api_host variable with the machine IP:PORT.
 
