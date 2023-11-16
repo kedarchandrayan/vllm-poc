@@ -19,6 +19,7 @@ Create directory structure using following commands:
 ```sh
 mkdir /workspace/vllm
 mkdir /workspace/vllm/logs
+mkdir /workspace/vllm/huggingface
 touch /workspace/vllm/logs/err.log
 touch /workspace/vllm/logs/out.log
 ```
